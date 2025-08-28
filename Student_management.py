@@ -98,8 +98,8 @@ def find_by_branch():
         if stud["branch"].lower()==branch.lower():
             print(f"Roll number: {roll} Name:{stud["name"]}")
             found=True
-        else:
-            print("----No student found in this branch----")
+    if not found:
+        print("----No student found in this branch----")
 def compare_cgpa(students,roll1,roll2):
     if roll1 not in students or roll2 not in students:
         print("-----Roll nunber not found-----")
