@@ -1,3 +1,17 @@
+import json 
+import os
+def save_data():
+    """Save all students to a JSON file"""
+    with open("students.json", "w") as f:
+        json.dump(students, f, indent=4)
+def load_data():
+    global students
+    if os.path.exists("students.json"):
+        with open("students.json", "r") as f:
+            students = json.load(f)
+    else:
+        students = {}
+load_data()  
 students={}
 def add_student():
     roll=input("Enter your roll number:")
@@ -14,24 +28,13 @@ def add_student():
         except:
             admission_year=input("Please Enter a valid admission year:")
     phone_number=input("Enter student phone number:")
-    while True:
-        try:
-            phone_number=int(phone_number)
-            if len(str(phone_number))==10:
-                break
-            else:
-                phone_number=input("please enter 10 digit number:")
-        except:
-            phone_number=input("please enter valid number:")
+    while not (phone_number.isdigit() and len(phone_number)==10):
+        print("invalid phone number")
+        phone_number=input("enter phone number again:")
     email=input("Enter student email:")
-    while True:
-        try:
-            if "@" not in email or "." not in email:
-                email=input("Enter a valid email")
-            else:
-                break
-        except:
-            print("Invalid email:")
+    while "@" not in email or not email.endswith("gmail.com"):
+        print("Email must be @ and ends with gmail.com")
+        email=input("please enter a valid email:")
     semester=input("Enter student semester:")
     cgpa=float(input("Enter student cgpa:"))
     year=int(input("Enter student year:"))
@@ -42,6 +45,7 @@ def add_student():
         "contact":(phone_number,email),
         "academic_history":(semester,cgpa,year),
     }
+    save_data()
     print("Student added successfully")
 def fetch_student():
     roll=input("Enter your roll number:")
@@ -73,7 +77,13 @@ def update_student():
         s["admission_year"]=input("Enter student admission year:")
     elif choice=="4":
         phone_number=input("Enter student phone number:")
+        while not (phone_number.isdigit() and len(phone_number)==10):
+            print("invalid phone number")
+            phone_number=input("enter phone number again:")
         email=input("Enter student email:")
+        while "@" not in email or not email.endswith("gmail.com"):
+            print("Email must be @ and ends with gmail.com")
+            email=input("please enter a valid email:")
         s["contact"]=(phone_number,email)
     elif choice=="5":
         semester=input("Enter student semester:")
